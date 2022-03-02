@@ -1,6 +1,6 @@
 # flutter_practice
 
-[Flutter実践入門 ～環境構築からAndroid/iOS/Webに広告を付けて同時にリリース!!～](https://zenn.dev/kazutxt/books/flutter_practice_introduction)の
+[Flutter実践入門 ～環境構築からAndroid/iOS/Webに広告を付けて同時にリリース!!～](https://zenn.dev/kazutxt/books/flutter_practice_introduction)の練習用
 
 ## Getting Started
 
