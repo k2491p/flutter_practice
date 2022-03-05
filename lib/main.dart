@@ -1,16 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/TestPage1.dart';
-import 'package:flutter_practice/TestPage2.dart';
-import 'package:flutter_practice/TestPage3.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,72 +14,77 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      routes: {
-        "/test1": (BuildContext context) => TestPage1(),
-        "/test2": (BuildContext context) => TestPage2(),
-        "/test3": (BuildContext context) => TestPage3(),
-      },
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
+  MyHomePage({Key? key, this.title}) : super(key: key);
+  final String? title;
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  late AnimationController _animationControler;
+  late Animation _animation;
+
+  _play() async {
+    setState(() {
+      _animationControler.forward();
+    });
+  }
+
+  _stop() async {
+    setState(() {
+      _animationControler.stop();
+    });
+  }
+
+  _reverse() async {
+    setState(() {
+      _animationControler.reverse();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _animationControler =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animation = _animationControler.drive(Tween(begin: 0.0, end: 2.0 * pi));
+  }
+
+  @override
+  void dispose() {
+    _animationControler.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: TestPage1());
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title!),
+      ),
+      body: Center(
+        child: AnimatedBuilder(
+          animation: _animation,
+          builder: (context, _) {
+            return Transform.rotate(
+                angle: _animation.value, child: Icon(Icons.cached, size: 100));
+          },
+        ),
+      ),
+      floatingActionButton:
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        FloatingActionButton(
+            onPressed: _play, child: Icon(Icons.arrow_forward)),
+        FloatingActionButton(onPressed: _stop, child: Icon(Icons.pause)),
+        FloatingActionButton(
+            onPressed: _reverse, child: Icon(Icons.arrow_back)),
+      ]),
+    );
   }
-  // int _counter = 0;
-  // String _type = "偶数";
-
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _counter++;
-  //     if (_counter % 2 == 0) {
-  //       _type = "偶数";
-  //     } else {
-  //       _type = "奇数";
-  //     }
-  //   });
-  // }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text(widget.title),
-  //     ),
-  //     body: Center(
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: <Widget>[
-  //           Text(
-  //             'You have pushed the button this many times:',
-  //           ),
-  //           Text(
-  //             '$_counter',
-  //             style: Theme.of(context).textTheme.headline4,
-  //           ),
-  //           if (_counter % 2 == 0)
-  //             Text('偶数です?', style: TextStyle(fontSize: 20, color: Colors.red)),
-  //           if (_counter % 2 == 1)
-  //             Text('奇数です!', style: TextStyle(fontSize: 20, color: Colors.red))
-  //         ],
-  //       ),
-  //     ),
-  //     floatingActionButton: FloatingActionButton(
-  //       onPressed: _incrementCounter,
-  //       tooltip: 'Increment',
-  //       child: Icon(Icons.add),
-  //     ), // This trailing comma makes auto-formatting nicer for build methods.
-  //   );
-  // }
 }
