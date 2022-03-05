@@ -70,9 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline4,
             ),
             if (_counter % 2 == 0)
-              Text('偶数です', style: TextStyle(fontSize: 20, color: Colors.red)),
+              Text('偶数です?', style: TextStyle(fontSize: 20, color: Colors.red)),
             if (_counter % 2 == 1)
-              Text('奇数です', style: TextStyle(fontSize: 20, color: Colors.red))
+              Text('奇数です!', style: TextStyle(fontSize: 20, color: Colors.red))
           ],
         ),
       ),
