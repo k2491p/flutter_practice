@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_practice/Async.dart';
+import 'package:flutter_practice/NullSample.dart';
 void main() {
  runApp(MyApp());
 }
@@ -27,7 +28,8 @@ class _MyHomePageState extends State<MyHomePage> {
    setState(() {
      _counter++;
    });
-    Async().asynctest4(); // 2-4も同様にここで呼び出す
+    // Async().asynctest4(); // 2-4も同様にここで呼び出す
+    NullSample.method1();
  }
  @override
  Widget build(BuildContext context) {
