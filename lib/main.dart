@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_practice/Async.dart';
 import 'package:flutter_practice/NullSample.dart';
+import 'package:flutter_practice/dummy.dart';
 void main() {
  runApp(MyApp());
 }
@@ -27,12 +28,38 @@ class _MyHomePageState extends State<MyHomePage> {
  void _incrementCounter() {
    setState(() {
      _counter++;
+     print("call setState");
    });
     // Async().asynctest4(); // 2-4も同様にここで呼び出す
-    NullSample.method1();
+    // NullSample.method1();
+    nextpage();
  }
+
+// ダミーで画面遷移を行う
+  void nextpage() async {
+    {
+      // ダミー画面へ遷移
+      await Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) {
+        return DummyPage();
+      }));
+    }
+  }
+
+   @override
+  void initState() {
+    print("call initState");
+    super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+    print("call didChangeDependencies");
+    super.didChangeDependencies();
+  }
+
  @override
  Widget build(BuildContext context) {
+   print("call build");
    return Scaffold(
      appBar: AppBar(
        title: Text(widget.title!),
@@ -60,4 +87,21 @@ class _MyHomePageState extends State<MyHomePage> {
      ),
    );
  }
-}
+
+
+ @override
+  void didUpdateWidget(oldWidget) {
+    print("call didUpdateWidget");
+    super.didUpdateWidget(oldWidget);
+  }
+  @override
+  void deactivate() {
+    print("call deactivate");
+    super.deactivate();
+  }
+  @override
+  void dispose() {
+    print("call dispose");
+    super.dispose();
+  }
+  }
