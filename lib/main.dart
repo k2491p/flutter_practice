@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import "dart:async";
 import 'package:flutter_practice/BussinessLogic.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,6 +12,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('ja', ''), //日本語
+        const Locale('en', ''), //英語
+      ],
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -71,14 +83,15 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              AppLocalizations.of(context)!.hello("kazutxt"),
             ),
             Text(
-              '$_counter',
-              key: Key('counter'),
-              style: Theme.of(context).textTheme.headline4,
+              AppLocalizations.of(context)!.allow,
             ),
-          ],
+            Text(
+              AppLocalizations.of(context)!.deny,
+            ),
+         ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
