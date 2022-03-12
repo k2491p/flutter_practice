@@ -1,27 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import "dart:async";
-import 'package:flutter_practice/BussinessLogic.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_practice/statefulTile.dart';
 
 void main() {
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('ja', ''), //日本語
-        const Locale('en', ''), //英語
-      ],
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -30,76 +16,40 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, this.title}) : super(key: key);
   final String? title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  var intStream = StreamController<int>();
-  var stringStream = StreamController<String>();
-  var generator = new Generator();
-  var coodinator = new Coordinator();
-  var consumer = new Consumer();
-
-  void _incrementCounter() {
-    generator.generate();
-    setState(() {
-      _counter;
-    });
-  }
-
+  late List<Widget> tiles;
   @override
   void initState() {
-    generator.init(intStream);
-    coodinator.init(intStream, stringStream);
-    consumer.init(stringStream);
-    coodinator.coorinate();
-    consumer.consume();
-
     super.initState();
+    tiles = [
+      StatefulTile(key: UniqueKey()),
+      StatefulTile(key: UniqueKey()),
+    ];
   }
-
-  @override
-  void dispose() {
-    intStream.close();
-    stringStream.close();
-    super.dispose();
+  // 入れ替え処理
+  void changeTiles() {
+    setState(() {
+      tiles.insert(1, tiles.removeAt(0));
+    });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title!),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              AppLocalizations.of(context)!.hello("kazutxt"),
-            ),
-            Text(
-              AppLocalizations.of(context)!.allow,
-            ),
-            Text(
-              AppLocalizations.of(context)!.deny,
-            ),
-         ],
-        ),
-      ),
+      body: Row(children: tiles),
       floatingActionButton: FloatingActionButton(
-        key: Key('increment'),
-        onPressed: _incrementCounter,
+        onPressed: changeTiles,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
