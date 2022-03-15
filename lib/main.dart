@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_practice/MyInheritedWidget.dart';
 import 'package:flutter_practice/Widgets.dart';
-import 'MyInheritedWidget.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,40 +33,25 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
+    print("count:" + _counter.toString());
   }
+  // Scaffoldの下のCenter部分を先に静的に作っておき、作り返さないように制御
+  // 深い階層の伝播は証明できたためにシンプルにCenter->WidgetAに変更
+  final Widget _widget = Center(child: WidgetA());
 
   @override
   Widget build(BuildContext context) {
-    // InheritedWidgetが間に挟まり、childでScaffoldを指定している
-    return MyInheritedWidget( 
-        message: "I am InheritedWidget",
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title!),
-          ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Container->Center->Row->Column->WidgetAの階層で呼び出す
-                // 階層を深くしたいだけなので、Container~Columnまでに意味はなし
-                Container(
-                    child: Center(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                      Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [WidgetA()])
-                    ]))),
-              ],
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _incrementCounter,
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
-          ), // This trailing comma makes auto-formatting nicer for build methods.
-        ));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title!),
+      ),
+      // 静的に作ったCenterより下のツリーを配置する
+      body: MyInheritedWidget(count: _counter, child: _widget),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
   }
 }

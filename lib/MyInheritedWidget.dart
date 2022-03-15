@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MyInheritedWidget extends InheritedWidget {
-  final String message;
+  // final String message;
+  final int count;
   // コンストラクタでメッセージと子Widgetを取る
-  MyInheritedWidget({required this.message, required Widget child})
+  MyInheritedWidget({required this.count, required Widget child})
       : super(child: child);
 
   // O(1)でInheritedWidgetを返却
@@ -14,5 +15,5 @@ class MyInheritedWidget extends InheritedWidget {
   //更新されたかどうかの判定ロジック
   @override
   bool updateShouldNotify(MyInheritedWidget oldWidget) =>
-      oldWidget.message != message;
+      oldWidget.count != count && count % 2 == 0;
 }
