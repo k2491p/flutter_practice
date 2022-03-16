@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_practice/MyInheritedWidget.dart';
 import 'package:flutter_practice/Widgets.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,7 +38,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   // Scaffoldの下のCenter部分を先に静的に作っておき、作り返さないように制御
   // 深い階層の伝播は証明できたためにシンプルにCenter->WidgetAに変更
-  final Widget _widget = Center(child: WidgetA());
+  final Widget _widget = Center(
+       child: Consumer<int>(
+     builder: (context, value, _) => Text(
+      value.toString(),
+      style: TextStyle(fontSize: 100),
+    ),
+ ));
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title!),
       ),
       // 静的に作ったCenterより下のツリーを配置する
-      body: MyInheritedWidget(count: _counter, child: _widget),
+      // body: MyInheritedWidget(count: _counter, child: _widget),
+      body: Provider<int>.value(value: _counter, child: _widget),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
