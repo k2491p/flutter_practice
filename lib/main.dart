@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_practice/freezed_check.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
@@ -51,6 +52,7 @@ class MyContents extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final _value = useProvider(_mydataProvider);
+    func2();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
